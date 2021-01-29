@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title th:text="${add} ? 'Добавление книги' : 'Редактирование книги'">Добавление или
+    редактирование книги</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <link href="../../static/css/gtvg.css" media="all" rel="stylesheet" th:href="@{/ui/css/gtvg.css}"
+        type="text/css"/>
+  <script src="/webjars/jquery/3.3.1/jquery.min.js"
+          th:src="@{/ui/webjars/jquery/3.3.1/jquery.min.js}"></script>
+  <script src="/scripts/bookedit.js" th:src="@{/ui/scripts/bookedit.js}"></script>
+</head>
+
+<body>
+
+<h1 th:text="${add} ? 'Добавление книги' : 'Редактирование книги'">Добавление или редактирование
+  книги</h1>
+<div>
+  <nobr>
+    <a th:href="@{/ui/book/booklist}">Список книг</a> |
+    <a th:href="@{/ui/}">Стартовая страница</a>
+  </nobr>
+</div>
+<br/><br/>
+
+<table border="0">
+  <tr th:if="not ${add}">
+    <td>ID</td>
+    <td>:</td>
+    <td id="id"></td>
+  </tr>
+  <tr>
+    <td>Наименование</td>
+    <td>:</td>
+    <td>
+      <input id="bookNameId" type="text"/>
+    </td>
+  </tr>
+  <tr>
+    <td>Категория</td>
+    <td>:</td>
+    <td>
+      <select id="categoryId">
+        <option th:each="category : ${categories}" th:text="${category.name}"
+                th:value="${category.categoryId}">category1
+        </option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Авторы</td>
+    <td>:</td>
+    <td>
+      <select id="authorIds" multiple="multiple" name="authors" size="10">
+        <option th:each="author:${allAuthors}"
+                th:text="${author.name}+' '+${author.surname}"
+                th:value="${author.authorId}">author1
+        </option>
+      </select>
+    </td>
+  </tr>
+</table>
+<br/><br/>
+<div th:if="${add}">
+  <a th:href="'#'" th:onclick="addBook()">Добавить книгу</a>
+</div>
+<div th:unless="${add}">
+  <a th:href="'#'" th:onclick="editBook()">Изменить</a>
+</div>
+<br/><br/>
+<div class="error" id="errorId"></div>
+<br/><br/>
+<script th:if="not ${add}" th:text="'loadingDoc(' + ${bookId}+')'"></script>
+<div th:insert="~{footer::copy}">&copy; 2020 The Static Templates</div>
+</body>
+
+</html>
+

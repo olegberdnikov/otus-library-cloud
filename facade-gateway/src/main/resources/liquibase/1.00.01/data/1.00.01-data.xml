@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+  <changeSet author="berdnikov" context="update" id="1.2.1-test_data_inserts_ref_authority"
+    runInTransaction="false">
+    <preConditions onFail="MARK_RAN">
+      <tableExists tableName="ref_user"/>
+    </preConditions>
+    <sql splitStatements="true">
+      insert into ref_user (user_id, name, password) values (1, 'user',
+      '$2a$11$rd8Cd3wkzPjwqTQNBQB6f.eu5z5SvnsRnB6MjxpTF4SjBJ7qxBSfa');
+      insert into ref_user (user_id, name, password) values (2, 'lib',
+      '$2a$11$rd8Cd3wkzPjwqTQNBQB6f.eu5z5SvnsRnB6MjxpTF4SjBJ7qxBSfa');
+      insert into ref_user (user_id, name, password) values (3, 'admin',
+      '$2a$11$rd8Cd3wkzPjwqTQNBQB6f.eu5z5SvnsRnB6MjxpTF4SjBJ7qxBSfa');
+      insert into ref_authority (authority_id, user_name, authority) values (1, 'user', 'USER');
+      insert into ref_authority (authority_id, user_name, authority) values (2, 'lib', 'LIBRARIAN');
+      insert into ref_authority (authority_id, user_name, authority) values (3, 'lib', 'USER');
+      insert into ref_authority (authority_id, user_name, authority) values (4, 'admin', 'USER');
+      insert into ref_authority (authority_id, user_name, authority) values (5, 'admin', 'ADMIN');
+      insert into ref_authority (authority_id, user_name, authority) values (6, 'admin',
+      'LIBRARIAN');
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

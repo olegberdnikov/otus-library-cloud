@@ -1,0 +1,59 @@
+management:
+  server:
+    port: ${MANAGEMENT_SERVER_PORT:8088}
+  endpoints:
+    web:
+      exposure:
+        include: info
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    whitelabel:
+      enabled: false
+spring:
+  datasource:
+    platform: ${DB_DATASOURCE_PLATFORM:H2}
+    driverClassName: ${DB_DRIVER:}
+    url: ${DB_URL:jdbc:h2:mem:testdb}
+    username: ${DB_LOGIN:}
+    password: ${DB_PASSWORD:}
+    initialization-mode: never
+    hikari:
+      connection-test-query: ${DB_TEST_QUERY:}
+      maximumPoolSize: ${HIKARI_MAXIMUM_POOLSIZE:10}
+      minimumIdle: ${HIKARI_MINIMUM_IDLE:10}
+      idleTimeout: ${HIKARI_IDLE_TIMEOUT:600000}
+      connectionTimeout: ${HIKARI_CONNECTION_TIMEOUT:30000}
+      maxLifetime: ${HIKARI_MAX_LIFETIME:1800000}
+  h2:
+    console:
+      enabled: true
+  jpa:
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+        globally_quoted_identifiers: ${DB_QUOTED_IDENTIFIERS:false}
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  liquibase:
+    enabled: true
+    change-log: classpath*:liquibase/rootChangeLog.xml
+logging:
+  level:
+    ROOT: ${ROOT_LOGGING:INFO}
+application:
+  locale: ru
+info:
+  app:
+    name: 1
+    description: Сервер приложения
+    version: 1
+security:
+  enabled: true

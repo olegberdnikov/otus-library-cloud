@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <appender class="ch.qos.logback.core.ConsoleAppender" name="Console">
+    <encoder>
+      <charset>UTF-8</charset>
+      <pattern>%d{ISO8601} [%-5p][%-10.10t][%34.34c] - %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="File">
+    <encoder>
+      <charset>UTF-8</charset>
+      <pattern>%d{ISO8601} [%-5p][%-10.10t][%34.34c] - %m%n</pattern>
+    </encoder>
+    <file>./otus-library.log</file>
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>./otus-library.%d{yyyy-MM-dd}.log
+      </fileNamePattern>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+  </appender>
+
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <logger additivity="false" level="debug"
+    name="ru.otus.homework">
+    <appender-ref ref="Console"/>
+  </logger>
+  <root level="info">
+    <appender-ref ref="Console"/>
+    <appender-ref ref="File"/>
+  </root>
+</configuration>

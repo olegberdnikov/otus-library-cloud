@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Библиотека OTUS</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <link href="../static/css/gtvg.css" media="all" rel="stylesheet" th:href="@{css/gtvg.css}"
+        type="text/css"/>
+</head>
+
+<body>
+<div>
+  <div>
+    <img alt="OTUS logo" src="../static/images/otuslogo.png" th:alt-title="#{logo}"
+         th:src="@{images/otuslogo.png}" title="OTUS logo"/>
+  </div>
+  <div>
+    <h1>Библиотека OTUS</h1>
+    <p>
+      Сегодня: <span th:text="${#calendars.format(today,df)}" th:with="df=#{date.format}">13 February 2011</span>
+    </p>
+  </div>
+</div>
+
+
+<p>Выберите пункт меню</p>
+<ol>
+  <li><a href="book/list.html" th:href="@{book/booklist}">Книги</a></li>
+  <li><a href="authors/authorlist.html" th:href="@{author/authorlist}">Авторы</a></li>
+  <li><a href="categories/categorylist.html" th:href="@{category/categorylist}">Категории</a></li>
+</ol>
+
+<div th:insert="~{footer::copy}">&copy; 2020 The Static Templates</div>
+</body>
+
+</html>
+

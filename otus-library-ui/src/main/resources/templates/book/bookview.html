@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title th:text="${allowDelete} ? 'Удаление книги' : 'Просомотр книги'">Удаление или просмотр
+    книги</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <script src="/webjars/jquery/3.3.1/jquery.min.js"
+          th:src="@{/ui/webjars/jquery/3.3.1/jquery.min.js}"></script>
+  <script src="/scripts/bookview.js" th:src="@{/ui/scripts/bookview.js}"></script>
+  <script th:text="'loadingDoc(' + ${bookId}+')'"></script>
+  <link href="../../static/css/gtvg.css" media="all" rel="stylesheet" th:href="@{/ui/css/gtvg.css}"
+        type="text/css"/>
+</head>
+
+<body>
+
+<h1 th:text="${allowDelete} ? 'Удаление книги' : 'Просмотр книги'">Удаление или просмотр книги</h1>
+<div>
+  <nobr>
+    <a th:href="@{/ui/book/booklist}">Список книг</a> |
+    <a th:href="@{/ui/}">Стартовая страница</a>
+  </nobr>
+</div>
+
+<br/><br/>
+
+<table border="0">
+  <tbody id="tbodyBook">
+  <tr>
+    <td>ID</td>
+    <td>:</td>
+    <td id="id"></td>
+  </tr>
+  <tr>
+    <td>Наименование</td>
+    <td>:</td>
+    <td id="nameId"></td>
+  </tr>
+  <tr>
+    <td>Категория</td>
+    <td>:</td>
+    <td id="categoryIds"></td>
+  </tr>
+  </tbody>
+  <tr>
+    <td>Авторы</td>
+    <td>:</td>
+    <td id="authorsIds"></td>
+  </tr>
+  </tbody>
+</table>
+<br/><br/>
+<div th:if="not ${allowDelete}">
+  <a th:href="@{/ui/book/edit/{bookId}(bookId=${bookId})}">Редактировать</a> |
+  <a th:href="@{/ui/book/delete/{bookId}(bookId=${bookId})}">Удалить</a>
+</div>
+
+<div th:if="${allowDelete}">
+  <a th:href="'#'" th:onclick="@{deleteBook({bookId})(bookId=${bookId})}">Удалить книгу ?</a>
+</div>
+<br/><br/>
+<div class="error" id="errorId"></div>
+<h3>Комментарии</h3>
+<table border="0">
+  <tbody id="tbodyComments">
+  </tbody>
+</table>
+<br/><br/>
+<div th:insert="~{footer::copy}">&copy; 2020 The Static Templates</div>
+</body>
+</html>
+

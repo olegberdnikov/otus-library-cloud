@@ -1,0 +1,133 @@
+version: '3.0'
+services:
+  facade-gateway:
+    restart: on-failure:5
+    hostname: facade-gateway
+    container_name: facade-gateway
+    build:
+      context: ./facade-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - SERVER_PORT=8081
+      - DB_DATASOURCE_PLATFORM=postgresql
+      - DB_DRIVER=org.postgresql.Driver
+      - DB_URL=jdbc:postgresql://postgres-db:5432/db
+      - DB_LOGIN=postgres
+      - DB_PASSWORD=postgres
+      - DB_INITIALIZATION_MODE=always
+      - WAIT_FOR=postgres:5432
+      - HIKARI_MAXIMUM_POOLSIZE=3
+      - HIKARI_MINIMUM_IDLE=3
+      - ROOT_LOGGING=DEBUG
+      - EUREKA_URL=http://eureka-server:8761/eureka
+      - MANAGEMENT_SERVER_PORT=7777
+    networks:
+      - public-network
+    depends_on:
+      - eureka-server
+      - configuration-server
+    entrypoint: ["/usr/local/bin/wait-for-it.sh", "-s" ,"-t", "200", "config-server:7777", "--"]
+    command: ["java", "-jar", "/app/app.jar"]
+  apprest:
+    restart: on-failure:5
+    hostname: otus-library-rest
+    container_name: otus-library-rest
+    build:
+      context: ./otus-library-rest
+      dockerfile: Dockerfile
+    environment:
+      - SERVER_PORT=8080
+      - DB_DATASOURCE_PLATFORM=postgresql
+      - DB_DRIVER=org.postgresql.Driver
+      - DB_URL=jdbc:postgresql://postgres-db:5432/db
+      - DB_LOGIN=postgres
+      - DB_PASSWORD=postgres
+      - DB_INITIALIZATION_MODE=always
+      - WAIT_FOR=postgres:5432
+      - HIKARI_MAXIMUM_POOLSIZE=3
+      - HIKARI_MINIMUM_IDLE=3
+      - ROOT_LOGGING=DEBUG
+      - EUREKA_URL=http://eureka-server:8761/eureka
+      - MANAGEMENT_SERVER_PORT=7777
+    ports:
+      - "8071:8080"
+    networks:
+      - public-network
+    depends_on:
+      - postgres-db
+      - eureka-server
+      - configuration-server
+    entrypoint: ["/usr/local/bin/wait-for-it.sh", "-s" ,"-t", "200", "config-server:7777", "--"]
+    command: ["java", "-jar", "/app/app.jar"]
+  appui:
+    restart: on-failure:5
+    hostname: otus-library-ui
+    container_name: otus-library-ui
+    build:
+      context: ./otus-library-ui
+      dockerfile: Dockerfile
+    environment:
+      - SERVER_PORT=8080
+      - ROOT_LOGGING=DEBUG
+      - EUREKA_URL=http://eureka-server:8761/eureka
+      - MANAGEMENT_SERVER_PORT=7777
+    ports:
+      - "8080:8080"
+    networks:
+      - public-network
+    depends_on:
+      - postgres-db
+      - eureka-server
+      - configuration-server
+    entrypoint: ["/usr/local/bin/wait-for-it.sh", "-s" ,"-t", "200", "config-server:7777", "--"]
+    command: ["java", "-jar", "/app/app.jar"]
+  configuration-server:
+    hostname: config-server
+    container_name: config-server
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      - EUREKA_URL=http://eureka-server:8761/eureka
+      - MANAGEMENT_SERVER_PORT=7777
+    networks:
+      - public-network
+    depends_on:
+      - eureka-server
+    entrypoint: ["/usr/local/bin/wait-for-it.sh", "-s" ,"-t", "200", "eureka-server:7777", "--"]
+    command: ["java", "-jar", "/app/app.jar"]
+  eureka-server:
+    restart: on-failure:5
+    hostname: eureka-server
+    container_name: eureka-server
+    build:
+      context: ./service-discovery-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    environment:
+      - MANAGEMENT_SERVER_PORT=7777
+    networks:
+      - public-network
+  postgres-db:
+    hostname: postgres-db
+    container_name: postgres-db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    image: "postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db
+    networks:
+      - public-network
+networks:
+  public-network:
+volumes:
+  pgdata:

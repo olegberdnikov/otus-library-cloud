@@ -1,0 +1,10 @@
+eureka:
+  client:
+    fetchRegistry: false
+spring:
+  application:
+    name: otuslibraryui
+  cloud:
+    config:
+      discovery:
+        enabled: false

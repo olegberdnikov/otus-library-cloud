@@ -1,0 +1,18 @@
+eureka:
+  client:
+    fetchRegistry: true
+    enabled: true
+    registerWithEureka: false
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: facadegateway
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: configserver
+      fail-fast: true

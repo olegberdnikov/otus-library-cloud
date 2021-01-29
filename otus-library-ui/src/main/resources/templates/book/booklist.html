@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Список книг</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <link href="../../static/css/gtvg.css" media="all" rel="stylesheet" th:href="@{/ui/css/gtvg.css}"
+        type="text/css"/>
+  <script src="/webjars/jquery/3.3.1/jquery.min.js"
+          th:src="@{/ui/webjars/jquery/3.3.1/jquery.min.js}"></script>
+  <script src="/scripts/booklist.js" th:src="@{/ui/scripts/booklist.js}"></script>
+</head>
+
+<body>
+
+<h1>Список книг</h1>
+<div>
+  <nobr>
+    <a th:href="@{/ui/book/addnew}">Добавить книгу</a> |
+    <a th:href="@{/ui/}">Стартовая страница</a>
+  </nobr>
+</div>
+<br/><br/>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Наименование</th>
+    <th>Категория</th>
+    <th>Авторы</th>
+    <th>Комментарии</th>
+    <th>Удалить</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<br/><br/>
+<div id="pagingDiv">
+</div>
+<br/><br/>
+<div class="error" id="errorId"></div>
+<br/><br/>
+<div th:insert="~{footer::copy}">&copy; 2020 The Static Templates</div>
+
+</body>
+</html>
+

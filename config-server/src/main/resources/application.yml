@@ -1,0 +1,25 @@
+management:
+  server:
+    port: ${MANAGEMENT_SERVER_PORT:8087}
+  endpoints:
+    web:
+      exposure:
+        include: info
+spring:
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+server:
+  port: 8888
+info:
+  app:
+    name: @project.artifactId@
+    description: Сервер конфигурации
+    version: @project.version@
+logging:
+  level:
+    ROOT: ${LOGGING_ROOT_LEVEL:INFO}

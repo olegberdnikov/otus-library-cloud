@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <meta content="" name="description">
+  <meta content="" name="author">
+  <title>Please sign in</title>
+  <link crossorigin="anonymous"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+        rel="stylesheet">
+  <link crossorigin="anonymous" href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css"
+        rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+  <form action="/login" class="form-signin" method="post">
+    <h2 class="form-signin-heading">Пожалуйста, пройдите авторизацию</h2>
+    <div style="color: red;" th:if="${param.error != null}">Некорректные имя пользователя-пароль
+    </div>
+    <div style="color:green;" th:if="${param.logout != null}">Успешно вышли из системы</div>
+    <label class="sr-only" for="username">Имя пользователя</label>
+    <input autofocus class="form-control" id="username" name="username"
+           placeholder="Имя пользователя" required type="text">
+    </p>
+    <p>
+      <label class="sr-only" for="password">Пароль</label>
+      <input class="form-control" id="password" name="password" placeholder="Пароль" required
+             type="password">
+    </p>
+    <p><input checked="checked" name='remember-me' type='checkbox'/> Запомнить меня на компьютере
+    </p>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+  </form>
+</div>
+</body>
+</html>

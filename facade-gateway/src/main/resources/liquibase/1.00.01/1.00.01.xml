@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+  <changeSet author="berdnikov" id="1.01.1-create_ref_user" runInTransaction="false">
+    <comment>Creation of ref_user</comment>
+    <createTable remarks="Пользователи" tableName="ref_user">
+      <column autoIncrement="false" name="user_id" remarks="Идентификатор записи"
+        type="NUMERIC(19,0)">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="name" remarks="Логин"
+        type="${varchar.prefix}VARCHAR(255)">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="password" remarks="Пароль"
+        type="${varchar.prefix}VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="ref_user"/>
+      </not>
+    </preConditions>
+  </changeSet>
+
+  <changeSet author="berdnikov" id="1.01.1-create_ref_authority" runInTransaction="false">
+    <addForeignKeyConstraint baseColumnNames="user_name"
+      baseTableName="ref_authority"
+      constraintName="fk_ref_authority_login"
+      referencedColumnNames="name"
+      referencedTableName="ref_user"/>
+    <addUniqueConstraint columnNames="user_name,authority" tableName="ref_authority"/>
+    <comment>Creation of ref_authority</comment>
+    <createTable remarks="Права пользователей" tableName="ref_authority">
+      <column autoIncrement="false" name="authority_id" remarks="Идентификатор записи"
+        type="NUMERIC(19,0)">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="user_name" remarks="Логин"
+        type="${varchar.prefix}VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="authority" remarks="Права"
+        type="${varchar.prefix}VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="ref_authority"/>
+      </not>
+    </preConditions>
+  </changeSet>
+
+  <changeSet author="berdnikov" id="1.01.1-create_persistent_logins" runInTransaction="false">
+    <comment>Creation of persistent_logins</comment>
+    <createTable remarks="Права пользователей" tableName="persistent_logins">
+      <column autoIncrement="false" name="series" remarks="Идентификатор записи"
+        type="${varchar.prefix}VARCHAR(64)">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="username" remarks="Логин"
+        type="${varchar.prefix}VARCHAR(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="token" remarks="Токен"
+        type="${varchar.prefix}VARCHAR(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_used" remarks="Дата токена" type="TIMESTAMP">
+        <constraints nullable="true"/>
+      </column>
+    </createTable>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="persistent_logins"/>
+      </not>
+    </preConditions>
+  </changeSet>
+
+  <property dbms="oracle,postgresql,sybase,db2,h2" name="varchar.prefix" value=""/>
+
+  <property dbms="postgresql,mssql,oracle" name="autoIncrement" value="false"/>
+
+  <property dbms="h2" name="autoIncrement" value="true"/>
+
+  <property dbms="mssql" name="varchar.prefix" value="N"/>
+
+</databaseChangeLog>
